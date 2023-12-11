@@ -34,7 +34,7 @@ jobs:
         arguments: build
     - name: Build and Push Docker Image
       uses: mr-smithers-excellent/docker-build-push@v6
-      with: 
+      with:
         image: dvamosi8/learning_docker
         registry: docker.io
         username: ${{ secrets.DOCKER_USERNAME }}
