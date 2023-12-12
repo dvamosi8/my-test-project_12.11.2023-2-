@@ -1,3 +1,6 @@
+# Read this
+this branch is used to follow along in this video https://www.youtube.com/watch?v=R8_veQiYBjI
+
 ##### build the project
 
     ./gradlew build
