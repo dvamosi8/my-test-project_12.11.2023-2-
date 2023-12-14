@@ -18,22 +18,29 @@ permissions:
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
 
     steps:
     - name: Checkout
       uses: actions/checkout@v2
-    
-    - name: Build Docker Image
-      id: buildAndPushImage
-      uses: MaximilianoBz/dockerhub-buildpush@v1.0
+      
+    - name: Set up JDK 1.8
+      uses: actions/setup-java@v1
       with:
-        registry_url: 'docker.io'
-        repository_name: 'learning_dockerp'
-        user_name: ${{ secrets.DOCKER_USERNAME }}
-        password: ${{ secrets.DOCKER_TOKEN }}
-        image_version: 'v1.0'
-        docker_file: '.'
-    - name: Get pre step result output image_pull_url
-      run: echo "The time was ${{ steps.buildAndPushImage.outputs.image_pull_url }}"    
+        java-version: 1.8
+
+    - name: Grant execute permission for gradlew
+      run: chmod +x gradlew
+
+    - name: Build with Gradle
+      run: ./gradlew build
+
+    - name: Build & push Docker image
+      uses: mr-smithers-excellent/docker-build-push@v6
+      with:
+        image: repo/image
+        tags: v1, latest
+        registry: registry-url.io
+        dockerfile: Dockerfile
+        username: ${{ secrets.DOCKER_USERNAME }}
+        password: ${{ secrets.DOCKER_PASSWORD }}
